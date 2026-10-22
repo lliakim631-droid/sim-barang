@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIM-Barang - Sistem Pengelolaan Inventaris</title>
+</head>
+<body>
+
+    <!-- Bagian Kepala/Judul Halaman -->
+    <header>
+        <h1>SIM-Barang</h1>
+        <p>Sistem Pengelolaan Inventaris Barang Jurusan</p>
+    </header>
+
+    <!-- Menu Navigasi -->
+    <nav>
+        <ul>
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="#tabel-barang">Daftar Barang</a></li>
+            <li><a href="#form-barang">Input Barang</a></li>
+        </ul>
+    </nav>
+
+    <!-- Wadah Konten Utama -->
+    <main>
+        
+        <!-- Bagian 1: Tabel Inventaris Barang (Statis) -->
+        <section id="tabel-barang">
+            <h2>Daftar Inventaris Barang</h2>
+            <table style="border-collapse: collapse; width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Kode</th>
+                        <th>Nama Barang</th>
+                        <th>Kategori</th>
+                        <th>Jumlah</th>
+                        <th>Kondisi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>BRG-001</td>
+                        <td>Laptop Asus</td>
+                        <td>Elektronik</td>
+                        <td>10</td>
+                        <td>Baik</td>
+                    </tr>
+                    <tr>
+                        <td>BRG-002</td>
+                        <td>Proyektor Epson</td>
+                        <td>Peralatan Kelas</td>
+                        <td>3</td>
+                        <td>Baik</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <hr style="margin: 40px 0;">
+
+        <!-- Bagian 2: Formulir Input Barang -->
+        <section id="form-barang">
+            <h2>Formulir Tambah Barang</h2>
+            <form action="#" method="POST">
+                
+                <!-- Input Teks untuk Kode Barang -->
+                <div style="margin-bottom: 15px;">
+                    <label for="kode">Kode Barang:</label><br>
+                    <input type="text" id="kode" name="kode" placeholder="Contoh: BRG-003" required>
+                </div>
+
+                <!-- Input Teks untuk Nama Barang -->
+                <div style="margin-bottom: 15px;">
+                    <label for="nama">Nama Barang:</label><br>
+                    <input type="text" id="nama" name="nama" placeholder="Masukkan nama barang" required>
+                </div>
+
+                <!-- Dropdown untuk Kategori -->
+                <div style="margin-bottom: 15px;">
+                    <label for="kategori">Kategori:</label><br>
+                    <select id="kategori" name="kategori" required>
+                        <option value="">-- Pilih Kategori --</option>
+                        <option value="Elektronik">Elektronik</option>
+                        <option value="Peralatan Kelas">Peralatan Kelas</option>
+                        <option value=" फर्नीचर / Mebel">Mebel</option>
+                    </select>
+                </div>
+
+                <!-- Input Angka untuk Jumlah Barang -->
+                <div style="margin-bottom: 15px;">
+                    <label for="jumlah">Jumlah Barang:</label><br>
+                    <input type="number" id="jumlah" name="jumlah" min="1" placeholder="Masukkan jumlah" required>
+                </div>
+
+                <!-- Dropdown untuk Kondisi Barang -->
+                <div style="margin-bottom: 15px;">
+                    <label for="kondisi">Kondisi:</label><br>
+                    <select id="kondisi" name="kondisi" required>
+                        <option value="">-- Pilih Kondisi --</option>
+                        <option value="Baik">Baik</option>
+                        <option value="Rusak Ringan">Rusak Ringan</option>
+                        <option value="Rusak Berat">Rusak Berat</option>
+                    </select>
+                </div>
+
+                <!-- Tombol Submit -->
+                <button type="submit">Simpan Data Barang</button>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- Bagian Kaki Halaman -->
+    <footer>
+        <p>&copy; 2026 SIM-Barang - D3 Manajemen Informatika Politeknik Negeri Sriwijaya</p>
+    </footer>
+
+</body>
+</html>

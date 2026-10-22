@@ -1,0 +1,139 @@
+/* --- 1. PENGATURAN DASAR & BOX MODEL --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f6f9;
+    color: #333;
+    padding: 15px;
+}
+
+/* --- 2. HEADER & NAVIGASI (Menggunakan Flexbox) --- */
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px 8px 0 0;
+}
+
+nav {
+    background-color: #343a40;
+    padding: 10px 20px;
+    border-radius: 0 0 8px 8px;
+    margin-bottom: 20px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 10px;
+}
+
+nav ul li a:hover {
+    background-color: #495057;
+    border-radius: 4px;
+}
+
+/* --- 3. TATA LETAK UTAMA (Menggunakan CSS Grid & Box Model) --- */
+main {
+    display: grid;
+    grid-template-columns: 1fr; /* Default untuk layar ponsel */
+    gap: 20px;
+}
+
+section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    border: 1px solid #dee2e6;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+form div {
+    margin-bottom: 15px;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+}
+
+button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    padding: 15px;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+/* --- 4. MEDIA QUERY (Desain Responsif) --- */
+
+/* Layar Tablet (600px hingga 1024px) */
+@media (min-width: 600px) {
+    body {
+        padding: 30px;
+    }
+}
+
+/* Layar Komputer / Desktop (> 1024px) */
+@media (min-width: 1024px) {
+    main {
+        grid-template-columns: 1fr 1fr; /* Mengubah layout menjadi 2 kolom grid (Tabel & Form berdampingan) */
+        align-items: start;
+    }
+    
+    button[type="submit"] {
+        width: auto;
+    }
+}

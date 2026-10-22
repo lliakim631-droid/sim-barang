@@ -29,6 +29,12 @@
         <!-- Bagian 1: Tabel Inventaris Barang (Statis) -->
         <section id="tabel-barang">
             <h2>Daftar Inventaris Barang</h2>
+            <!-- Input Pencarian Real-Time -->
+            <div style="margin-bottom: 15px;">
+                <label for="cari-barang">Cari Barang:</label>
+                <input type="text" id="cari-barang" placeholder="Ketik kode atau nama barang...">
+            </div>
+
             <table style="border-collapse: collapse; width: 100%;">
                 <thead>
                     <tr>
@@ -111,11 +117,14 @@
         </section>
 
     </main>
+    <!-- Elemen Notifikasi Toast -->
+    <div id="toast" class="toast"></div>
 
     <!-- Bagian Kaki Halaman -->
     <footer>
         <p>&copy; 2026 SIM-Barang - D3 Manajemen Informatika Politeknik Negeri Sriwijaya</p>
     </footer>
 
+    <script src="main.js"></script>
 </body>
 </html>

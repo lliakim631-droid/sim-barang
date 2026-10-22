@@ -137,3 +137,57 @@ footer {
         width: auto;
     }
 }
+
+/* --- 4. MEDIA QUERY (Desain Responsif) --- */
+
+/* Layar Tablet (600px hingga 1024px) */
+@media (min-width: 600px) {
+    body {
+        padding: 30px;
+    }
+}
+
+/* Layar Komputer / Desktop (> 1024px) */
+@media (min-width: 1024px) {
+    main {
+        grid-template-columns: 1fr 1fr; /* Mengubah layout menjadi 2 kolom grid (Tabel & Form berdampingan) */
+        align-items: start;
+    }
+    
+    button[type="submit"] {
+        width: auto;
+    }
+}
+
+/* --- NOTIFIKASI TOAST (TARUH DI BAGIAN PALING BAWAH INI) --- */
+.toast {
+    visibility: hidden;
+    min-width: 280px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 14px 20px;
+    position: fixed;
+    z-index: 1000;
+    right: 30px;
+    bottom: 30px;
+    font-size: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    opacity: 0;
+    transition: opacity 0.3s, bottom 0.3s;
+}
+
+.toast.show {
+    visibility: visible;
+    opacity: 1;
+    bottom: 40px;
+}
+
+.toast.success {
+    background-color: #28a745;
+}
+
+.toast.error {
+    background-color: #dc3545;
+}

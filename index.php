@@ -1,3 +1,19 @@
+<?php
+session_start();
+
+// Proteksi Halaman: Jika belum login, alihkan kembali ke login.php
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Memanggil class Barang (Penerapan OOP Dasar)
+require_once 'Barang.php';
+
+// Contoh instansiasi objek dari class Barang
+$produk1 = new Barang("BRG-001", "Laptop Asus", 10, 7500000);
+$produk2 = new Barang("BRG-002", "Proyektor Epson", 3, 5000000);
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -10,15 +26,19 @@
 
     <header>
         <h1>SIM-Barang</h1>
-        <p>Sistem Pengelolaan Inventaris Barang Jurusan</p>
+        <p>Sistem Pengelolaan Inventaris Barang Jurusan (Halo, <strong><?php echo $_SESSION['user']; ?></strong>)</p>
     </header>
 
-    <nav>
-        <ul>
-            <li><a href="index.html">Beranda</a></li>
-            <li><a href="#tabel-barang">Daftar Barang</a></li>
-            <li><a href="#form-barang">Input Barang</a></li>
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <ul style="list-style: none; display: flex; gap: 20px; padding: 0;">
+            <li><a href="index.php" style="color: white; text-decoration: none;">Beranda</a></li>
+            <li><a href="#tabel-barang" style="color: white; text-decoration: none;">Daftar Barang</a></li>
+            <li><a href="#form-barang" style="color: white; text-decoration: none;">Input Barang</a></li>
         </ul>
+        <!-- Tombol Keluar / Logout -->
+        <div>
+            <a href="logout.php" style="background: #dc3545; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 14px;">Keluar (Logout)</a>
+        </div>
     </nav>
 
     <main>
@@ -26,6 +46,14 @@
         <!-- Bagian 1: Tabel Inventaris Barang -->
         <section id="tabel-barang">
             <h2>Daftar Inventaris Barang</h2>
+            
+            <!-- Contoh Tampilan Informasi menggunakan OOP -->
+            <div style="background: #e9ecef; padding: 10px; margin-bottom: 15px; border-radius: 4px; font-size: 14px;">
+                <strong>Info Objek (OOP):</strong><br>
+                - <?php echo $produk1->getInfoBarang(); ?><br>
+                - <?php echo $produk2->getInfoBarang(); ?>
+            </div>
+
             <div style="margin-bottom: 15px;">
                 <label for="cari-barang">Cari Barang:</label>
                 <input type="text" id="cari-barang" placeholder="Ketik kode atau nama barang...">
@@ -45,30 +73,21 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>BRG-001</td>
-                        <td>Laptop Asus</td>
+                        <td><?php echo $produk1->kode; ?></td>
+                        <td><?php echo $produk1->nama; ?></td>
                         <td>Elektronik</td>
-                        <td>10</td>
-                        <td>Rp 7.500.000</td>
-                        <td>Rp 75.000.000</td>
+                        <td><?php echo $produk1->jumlah; ?></td>
+                        <td>Rp <?php echo number_format($produk1->harga, 0, ',', '.'); ?></td>
+                        <td>Rp <?php echo number_format($produk1->hitungTotal(), 0, ',', '.'); ?></td>
                         <td>Baik</td>
                     </tr>
                     <tr>
-                        <td>BRG-002</td>
-                        <td>Proyektor Epson</td>
+                        <td><?php echo $produk2->kode; ?></td>
+                        <td><?php echo $produk2->nama; ?></td>
                         <td>Peralatan Kelas</td>
-                        <td>3</td>
-                        <td>Rp 5.000.000</td>
-                        <td>Rp 15.000.000</td>
-                        <td>Baik</td>
-                    </tr>
-                    <tr>
-                        <td>BRG-003</td>
-                        <td>Printer Canon</td>
-                        <td>Elektronik</td>
-                        <td>2</td>
-                        <td>Rp 1.250.000</td>
-                        <td>Rp 2.500.000</td>
+                        <td><?php echo $produk2->jumlah; ?></td>
+                        <td>Rp <?php echo number_format($produk2->harga, 0, ',', '.'); ?></td>
+                        <td>Rp <?php echo number_format($produk2->hitungTotal(), 0, ',', '.'); ?></td>
                         <td>Baik</td>
                     </tr>
                 </tbody>
@@ -81,17 +100,14 @@
         <section id="form-barang">
             <h2>Formulir Tambah Barang</h2>
             <form action="" method="POST">
-                
                 <div style="margin-bottom: 15px;">
                     <label for="kode">Kode Barang:</label><br>
                     <input type="text" id="kode" name="kode" placeholder="Contoh: BRG-004" required>
                 </div>
-
                 <div style="margin-bottom: 15px;">
                     <label for="nama">Nama Barang:</label><br>
                     <input type="text" id="nama" name="nama" placeholder="Masukkan nama barang" required>
                 </div>
-
                 <div style="margin-bottom: 15px;">
                     <label for="kategori">Kategori:</label><br>
                     <select id="kategori" name="kategori" required>
@@ -101,17 +117,14 @@
                         <option value="Mebel">Mebel</option>
                     </select>
                 </div>
-
                 <div style="margin-bottom: 15px;">
                     <label for="jumlah">Jumlah Barang:</label><br>
                     <input type="number" id="jumlah" name="jumlah" min="1" placeholder="Masukkan jumlah" required>
                 </div>
-
                 <div style="margin-bottom: 15px;">
                     <label for="harga">Harga Satuan (Rp):</label><br>
                     <input type="number" id="harga" name="harga" min="0" placeholder="Masukkan harga satuan" required>
                 </div>
-
                 <div style="margin-bottom: 15px;">
                     <label for="kondisi">Kondisi:</label><br>
                     <select id="kondisi" name="kondisi" required>
@@ -121,7 +134,6 @@
                         <option value="Rusak Berat">Rusak Berat</option>
                     </select>
                 </div>
-
                 <button type="submit">Simpan Data Barang</button>
             </form>
         </section>

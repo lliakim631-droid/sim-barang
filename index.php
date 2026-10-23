@@ -1,18 +1,19 @@
 <?php
 session_start();
 
-// Proteksi Halaman: Jika belum login, alihkan kembali ke login.php
+// Proteksi Halaman
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit;
 }
 
-// Memanggil class Barang (Penerapan OOP Dasar)
-require_once 'Barang.php';
+// Menghubungkan ke database
+require_once 'koneksi.php';
 
-// Contoh instansiasi objek dari class Barang
-$produk1 = new Barang("BRG-001", "Laptop Asus", 10, 7500000);
-$produk2 = new Barang("BRG-002", "Proyektor Epson", 3, 5000000);
+// Mengambil data barang dan menggabungkannya dengan nama kategori menggunakan JOIN
+$query = "SELECT barang.*, kategori.nama_kategori FROM barang LEFT JOIN kategori ON barang.kategori_id = kategori.id";
+$stmt = $pdo->query($query);
+$daftar_barang = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -35,7 +36,6 @@ $produk2 = new Barang("BRG-002", "Proyektor Epson", 3, 5000000);
             <li><a href="#tabel-barang" style="color: white; text-decoration: none;">Daftar Barang</a></li>
             <li><a href="#form-barang" style="color: white; text-decoration: none;">Input Barang</a></li>
         </ul>
-        <!-- Tombol Keluar / Logout -->
         <div>
             <a href="logout.php" style="background: #dc3545; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 14px;">Keluar (Logout)</a>
         </div>
@@ -43,17 +43,10 @@ $produk2 = new Barang("BRG-002", "Proyektor Epson", 3, 5000000);
 
     <main>
         
-        <!-- Bagian 1: Tabel Inventaris Barang -->
+        <!-- Bagian 1: Tabel Inventaris Barang Dinamis dari Database -->
         <section id="tabel-barang">
-            <h2>Daftar Inventaris Barang</h2>
+            <h2>Daftar Inventaris Barang (Database MySQL)</h2>
             
-            <!-- Contoh Tampilan Informasi menggunakan OOP -->
-            <div style="background: #e9ecef; padding: 10px; margin-bottom: 15px; border-radius: 4px; font-size: 14px;">
-                <strong>Info Objek (OOP):</strong><br>
-                - <?php echo $produk1->getInfoBarang(); ?><br>
-                - <?php echo $produk2->getInfoBarang(); ?>
-            </div>
-
             <div style="margin-bottom: 15px;">
                 <label for="cari-barang">Cari Barang:</label>
                 <input type="text" id="cari-barang" placeholder="Ketik kode atau nama barang...">
@@ -72,24 +65,24 @@ $produk2 = new Barang("BRG-002", "Proyektor Epson", 3, 5000000);
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><?php echo $produk1->kode; ?></td>
-                        <td><?php echo $produk1->nama; ?></td>
-                        <td>Elektronik</td>
-                        <td><?php echo $produk1->jumlah; ?></td>
-                        <td>Rp <?php echo number_format($produk1->harga, 0, ',', '.'); ?></td>
-                        <td>Rp <?php echo number_format($produk1->hitungTotal(), 0, ',', '.'); ?></td>
-                        <td>Baik</td>
-                    </tr>
-                    <tr>
-                        <td><?php echo $produk2->kode; ?></td>
-                        <td><?php echo $produk2->nama; ?></td>
-                        <td>Peralatan Kelas</td>
-                        <td><?php echo $produk2->jumlah; ?></td>
-                        <td>Rp <?php echo number_format($produk2->harga, 0, ',', '.'); ?></td>
-                        <td>Rp <?php echo number_format($produk2->hitungTotal(), 0, ',', '.'); ?></td>
-                        <td>Baik</td>
-                    </tr>
+                    <?php if (count($daftar_barang) > 0): ?>
+                        <?php foreach ($daftar_barang as $row): ?>
+                            <?php $total_nilai = $row['jumlah'] * $row['harga']; ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($row['kode']); ?></td>
+                                <td><?php echo htmlspecialchars($row['nama_barang']); ?></td>
+                                <td><?php echo htmlspecialchars($row['nama_kategori'] ?? 'Tanpa Kategori'); ?></td>
+                                <td><?php echo htmlspecialchars($row['jumlah']); ?></td>
+                                <td>Rp <?php echo number_format($row['harga'], 0, ',', '.'); ?></td>
+                                <td>Rp <?php echo number_format($total_nilai, 0, ',', '.'); ?></td>
+                                <td><?php echo htmlspecialchars($row['kondisi']); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="7" style="text-align: center;">Belum ada data barang di database.</td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </section>
@@ -99,7 +92,7 @@ $produk2 = new Barang("BRG-002", "Proyektor Epson", 3, 5000000);
         <!-- Bagian 2: Formulir Input Barang -->
         <section id="form-barang">
             <h2>Formulir Tambah Barang</h2>
-            <form action="" method="POST">
+            <form action="simpan.php" method="POST">
                 <div style="margin-bottom: 15px;">
                     <label for="kode">Kode Barang:</label><br>
                     <input type="text" id="kode" name="kode" placeholder="Contoh: BRG-004" required>
@@ -110,11 +103,11 @@ $produk2 = new Barang("BRG-002", "Proyektor Epson", 3, 5000000);
                 </div>
                 <div style="margin-bottom: 15px;">
                     <label for="kategori">Kategori:</label><br>
-                    <select id="kategori" name="kategori" required>
+                    <select id="kategori" name="kategori_id" required>
                         <option value="">-- Pilih Kategori --</option>
-                        <option value="Elektronik">Elektronik</option>
-                        <option value="Peralatan Kelas">Peralatan Kelas</option>
-                        <option value="Mebel">Mebel</option>
+                        <option value="1">Elektronik</option>
+                        <option value="2">Peralatan Kelas</option>
+                        <option value="3">Mebel</option>
                     </select>
                 </div>
                 <div style="margin-bottom: 15px;">

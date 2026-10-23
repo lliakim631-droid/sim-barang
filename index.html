@@ -8,13 +8,11 @@
 </head>
 <body>
 
-    <!-- Bagian Kepala/Judul Halaman -->
     <header>
         <h1>SIM-Barang</h1>
         <p>Sistem Pengelolaan Inventaris Barang Jurusan</p>
     </header>
 
-    <!-- Menu Navigasi -->
     <nav>
         <ul>
             <li><a href="index.html">Beranda</a></li>
@@ -23,13 +21,11 @@
         </ul>
     </nav>
 
-    <!-- Wadah Konten Utama -->
     <main>
         
-        <!-- Bagian 1: Tabel Inventaris Barang (Statis) -->
+        <!-- Bagian 1: Tabel Inventaris Barang -->
         <section id="tabel-barang">
             <h2>Daftar Inventaris Barang</h2>
-            <!-- Input Pencarian Real-Time -->
             <div style="margin-bottom: 15px;">
                 <label for="cari-barang">Cari Barang:</label>
                 <input type="text" id="cari-barang" placeholder="Ketik kode atau nama barang...">
@@ -42,6 +38,8 @@
                         <th>Nama Barang</th>
                         <th>Kategori</th>
                         <th>Jumlah</th>
+                        <th>Harga Satuan</th>
+                        <th>Total Nilai</th>
                         <th>Kondisi</th>
                     </tr>
                 </thead>
@@ -51,6 +49,8 @@
                         <td>Laptop Asus</td>
                         <td>Elektronik</td>
                         <td>10</td>
+                        <td>Rp 7.500.000</td>
+                        <td>Rp 75.000.000</td>
                         <td>Baik</td>
                     </tr>
                     <tr>
@@ -58,6 +58,17 @@
                         <td>Proyektor Epson</td>
                         <td>Peralatan Kelas</td>
                         <td>3</td>
+                        <td>Rp 5.000.000</td>
+                        <td>Rp 15.000.000</td>
+                        <td>Baik</td>
+                    </tr>
+                    <tr>
+                        <td>BRG-003</td>
+                        <td>Printer Canon</td>
+                        <td>Elektronik</td>
+                        <td>2</td>
+                        <td>Rp 1.250.000</td>
+                        <td>Rp 2.500.000</td>
                         <td>Baik</td>
                     </tr>
                 </tbody>
@@ -69,38 +80,38 @@
         <!-- Bagian 2: Formulir Input Barang -->
         <section id="form-barang">
             <h2>Formulir Tambah Barang</h2>
-            <form action="#" method="POST">
+            <form action="" method="POST">
                 
-                <!-- Input Teks untuk Kode Barang -->
                 <div style="margin-bottom: 15px;">
                     <label for="kode">Kode Barang:</label><br>
-                    <input type="text" id="kode" name="kode" placeholder="Contoh: BRG-003" required>
+                    <input type="text" id="kode" name="kode" placeholder="Contoh: BRG-004" required>
                 </div>
 
-                <!-- Input Teks untuk Nama Barang -->
                 <div style="margin-bottom: 15px;">
                     <label for="nama">Nama Barang:</label><br>
                     <input type="text" id="nama" name="nama" placeholder="Masukkan nama barang" required>
                 </div>
 
-                <!-- Dropdown untuk Kategori -->
                 <div style="margin-bottom: 15px;">
                     <label for="kategori">Kategori:</label><br>
                     <select id="kategori" name="kategori" required>
                         <option value="">-- Pilih Kategori --</option>
                         <option value="Elektronik">Elektronik</option>
                         <option value="Peralatan Kelas">Peralatan Kelas</option>
-                        <option value=" फर्नीचर / Mebel">Mebel</option>
+                        <option value="Mebel">Mebel</option>
                     </select>
                 </div>
 
-                <!-- Input Angka untuk Jumlah Barang -->
                 <div style="margin-bottom: 15px;">
                     <label for="jumlah">Jumlah Barang:</label><br>
                     <input type="number" id="jumlah" name="jumlah" min="1" placeholder="Masukkan jumlah" required>
                 </div>
 
-                <!-- Dropdown untuk Kondisi Barang -->
+                <div style="margin-bottom: 15px;">
+                    <label for="harga">Harga Satuan (Rp):</label><br>
+                    <input type="number" id="harga" name="harga" min="0" placeholder="Masukkan harga satuan" required>
+                </div>
+
                 <div style="margin-bottom: 15px;">
                     <label for="kondisi">Kondisi:</label><br>
                     <select id="kondisi" name="kondisi" required>
@@ -111,16 +122,14 @@
                     </select>
                 </div>
 
-                <!-- Tombol Submit -->
                 <button type="submit">Simpan Data Barang</button>
             </form>
         </section>
 
     </main>
-    <!-- Elemen Notifikasi Toast -->
+
     <div id="toast" class="toast"></div>
 
-    <!-- Bagian Kaki Halaman -->
     <footer>
         <p>&copy; 2026 SIM-Barang - D3 Manajemen Informatika Politeknik Negeri Sriwijaya</p>
     </footer>

@@ -1,29 +1,198 @@
+/* ===== SIM-Barang: tampilan sederhana dan rapi ===== */
 
-/* Tabel inventaris */
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --danger: #dc2626;
+    --danger-dark: #b91c1c;
+    --bg: #f3f4f6;
+    --card: #ffffff;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --radius: 8px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--text);
+    background-color: var(--bg);
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ===== Header ===== */
+header {
+    background-color: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 22px;
+    color: var(--primary);
+}
+
+header p {
+    margin: 2px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+/* ===== Konten ===== */
+main {
+    max-width: 1000px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+
+section {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+section h2 {
+    margin: 0 0 16px;
+    font-size: 17px;
+}
+
+/* ===== Ringkasan (kartu) ===== */
+.ringkasan {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.ringkasan .kartu {
+    background-color: var(--bg);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+}
+
+.ringkasan .kartu span {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.ringkasan .kartu strong {
+    font-size: 20px;
+}
+
+/* ===== Form ===== */
+form label {
+    display: block;
+    margin: 12px 0 4px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+form input,
+form select {
+    width: 100%;
+    padding: 9px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 15px;
+    font-family: inherit;
+    background-color: #fff;
+}
+
+form input:focus,
+form select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+form button[type="submit"] {
+    margin-top: 18px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--primary);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+form button[type="submit"]:hover {
+    background-color: var(--primary-dark);
+}
+
+/* Form tambah barang: dua kolom di layar lebar */
+#formInputBarang {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 16px;
+}
+
+#formInputBarang button {
+    grid-column: 1 / -1;
+    justify-self: start;
+}
+
+/* Pencarian */
+#cari-barang {
+    width: 100%;
+    padding: 9px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+/* ===== Tabel ===== */
 .table-wrapper {
     width: 100%;
     overflow-x: auto;
-    margin-top: 15px;
+    margin-top: 14px;
 }
 
 table {
     width: 100%;
-    min-width: 850px;
+    min-width: 800px;
     border-collapse: collapse;
 }
 
 th,
 td {
-    padding: 12px;
-    border: 1px solid #ddd;
+    padding: 10px 12px;
     text-align: left;
+    border-bottom: 1px solid var(--border);
 }
 
 th {
-    background-color: #18bfd3;
-    color: white;
+    background-color: var(--bg);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--muted);
 }
 
+tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+/* ===== Tombol aksi ===== */
 .action-cell {
     white-space: nowrap;
 }
@@ -31,70 +200,103 @@ th {
 .btn-edit,
 .btn-delete {
     display: inline-block;
-    padding: 7px 10px;
-    margin: 2px;
+    padding: 6px 12px;
+    margin: 0 2px;
     border: none;
-    border-radius: 5px;
-    text-decoration: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: inherit;
     cursor: pointer;
-    font-size: 14px;
+    color: #fff;
 }
 
 .btn-edit {
-    background-color: #5b5fef;
-    color: white;
+    background-color: var(--primary);
+}
+
+.btn-edit:hover {
+    background-color: var(--primary-dark);
+    text-decoration: none;
 }
 
 .btn-delete {
-    background-color: #dc3545;
-    color: white;
+    background-color: var(--danger);
+}
+
+.btn-delete:hover {
+    background-color: var(--danger-dark);
 }
 
 .delete-form {
     display: inline;
 }
 
-/* Pesan status */
+/* ===== Pesan status ===== */
 .notice {
-    padding: 12px;
-    background-color: #e0f7e9;
-    color: #176b39;
-    border-radius: 5px;
+    padding: 12px 16px;
+    margin: 0 0 20px;
+    background-color: #dcfce7;
+    color: #166534;
+    border-radius: var(--radius);
 }
 
-/* Form login */
+/* ===== Halaman login ===== */
 .login-page {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
-    background-color: #f4f7f6;
 }
 
 .login-card {
     width: 100%;
-    max-width: 350px;
-    padding: 30px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 360px;
+    padding: 28px;
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.login-card h2 {
+    margin: 0 0 4px;
+    text-align: center;
+    color: var(--primary);
+}
+
+.login-card .sub {
+    margin: 0 0 20px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.login-card button {
+    width: 100%;
 }
 
 .error {
-    color: #d8000c;
-    background-color: #ffdddd;
-    padding: 10px;
-    border-radius: 4px;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    background-color: #fee2e2;
+    color: #991b1b;
+    border-radius: 6px;
+    font-size: 14px;
 }
 
-@media (max-width: 600px) {
-    main,
+/* ===== Responsif ===== */
+@media (max-width: 700px) {
     header {
         padding: 12px;
     }
 
-    .table-wrapper {
-        overflow-x: auto;
+    .ringkasan,
+    #formInputBarang {
+        grid-template-columns: 1fr;
+    }
+
+    section {
+        padding: 14px;
     }
 }

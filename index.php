@@ -74,15 +74,21 @@ $pesan = [
     <?php endif; ?>
 
     <section>
-        <h2>Ringkasan Inventaris</h2>
-        <p>Total jenis barang: <strong><?= $totalJenis ?></strong></p>
-        <p>Total seluruh stok: <strong><?= $totalStok ?></strong></p>
-        <p>
-            Total nilai inventaris:
-            <strong>
-                Rp <?= number_format($totalNilai, 0, ",", ".") ?>
-            </strong>
-        </p>
+    <h2>Ringkasan Inventaris</h2>
+    <div class="ringkasan">
+        <div class="kartu">
+            <span>Total jenis barang</span>
+            <strong><?= $totalJenis ?></strong>
+        </div>
+        <div class="kartu">
+            <span>Total seluruh stok</span>
+            <strong><?= $totalStok ?></strong>
+        </div>
+        <div class="kartu">
+            <span>Total nilai inventaris</span>
+            <strong>Rp <?= number_format($totalNilai, 0, ",", ".") ?></strong>
+        </div>
+    </div>
     </section>
 
     <section>

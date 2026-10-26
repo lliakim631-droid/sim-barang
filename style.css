@@ -1,193 +1,100 @@
-/* --- 1. PENGATURAN DASAR & BOX MODEL --- */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
 
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: #f4f6f9;
-    color: #333;
-    padding: 15px;
-}
-
-/* --- 2. HEADER & NAVIGASI (Menggunakan Flexbox) --- */
-header {
-    background-color: #007bff;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    border-radius: 8px 8px 0 0;
-}
-
-nav {
-    background-color: #343a40;
-    padding: 10px 20px;
-    border-radius: 0 0 8px 8px;
-    margin-bottom: 20px;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 5px 10px;
-}
-
-nav ul li a:hover {
-    background-color: #495057;
-    border-radius: 4px;
-}
-
-/* --- 3. TATA LETAK UTAMA (Menggunakan CSS Grid & Box Model) --- */
-main {
-    display: grid;
-    grid-template-columns: 1fr; /* Default untuk layar ponsel */
-    gap: 20px;
-}
-
-section {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+/* Tabel inventaris */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 15px;
 }
 
 table {
     width: 100%;
+    min-width: 850px;
     border-collapse: collapse;
-    margin-top: 10px;
 }
 
-th, td {
-    border: 1px solid #dee2e6;
+th,
+td {
     padding: 12px;
+    border: 1px solid #ddd;
     text-align: left;
 }
 
 th {
-    background-color: #007bff;
+    background-color: #18bfd3;
     color: white;
 }
 
-form div {
-    margin-bottom: 15px;
+.action-cell {
+    white-space: nowrap;
 }
 
-input[type="text"],
-input[type="number"],
-select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-top: 5px;
-}
-
-button[type="submit"] {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 20px;
+.btn-edit,
+.btn-delete {
+    display: inline-block;
+    padding: 7px 10px;
+    margin: 2px;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
+    text-decoration: none;
     cursor: pointer;
-    font-weight: bold;
-    width: 100%;
-}
-
-button[type="submit"]:hover {
-    background-color: #218838;
-}
-
-footer {
-    text-align: center;
-    margin-top: 30px;
-    padding: 15px;
-    color: #6c757d;
-    font-size: 0.9rem;
-}
-
-/* --- 4. MEDIA QUERY (Desain Responsif) --- */
-
-/* Layar Tablet (600px hingga 1024px) */
-@media (min-width: 600px) {
-    body {
-        padding: 30px;
-    }
-}
-
-/* Layar Komputer / Desktop (> 1024px) */
-@media (min-width: 1024px) {
-    main {
-        grid-template-columns: 1fr 1fr; /* Mengubah layout menjadi 2 kolom grid (Tabel & Form berdampingan) */
-        align-items: start;
-    }
-    
-    button[type="submit"] {
-        width: auto;
-    }
-}
-
-/* --- 4. MEDIA QUERY (Desain Responsif) --- */
-
-/* Layar Tablet (600px hingga 1024px) */
-@media (min-width: 600px) {
-    body {
-        padding: 30px;
-    }
-}
-
-/* Layar Komputer / Desktop (> 1024px) */
-@media (min-width: 1024px) {
-    main {
-        grid-template-columns: 1fr 1fr; /* Mengubah layout menjadi 2 kolom grid (Tabel & Form berdampingan) */
-        align-items: start;
-    }
-    
-    button[type="submit"] {
-        width: auto;
-    }
-}
-
-/* --- NOTIFIKASI TOAST (TARUH DI BAGIAN PALING BAWAH INI) --- */
-.toast {
-    visibility: hidden;
-    min-width: 280px;
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 14px 20px;
-    position: fixed;
-    z-index: 1000;
-    right: 30px;
-    bottom: 30px;
     font-size: 14px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    opacity: 0;
-    transition: opacity 0.3s, bottom 0.3s;
 }
 
-.toast.show {
-    visibility: visible;
-    opacity: 1;
-    bottom: 40px;
+.btn-edit {
+    background-color: #5b5fef;
+    color: white;
 }
 
-.toast.success {
-    background-color: #28a745;
-}
-
-.toast.error {
+.btn-delete {
     background-color: #dc3545;
+    color: white;
+}
+
+.delete-form {
+    display: inline;
+}
+
+/* Pesan status */
+.notice {
+    padding: 12px;
+    background-color: #e0f7e9;
+    color: #176b39;
+    border-radius: 5px;
+}
+
+/* Form login */
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f4f7f6;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 350px;
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.error {
+    color: #d8000c;
+    background-color: #ffdddd;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+@media (max-width: 600px) {
+    main,
+    header {
+        padding: 12px;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
 }

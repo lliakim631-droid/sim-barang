@@ -1,18 +1,23 @@
+
 <?php
-$host = 'localhost';
-$dbname = 'sim_barang_db';
-$username = 'root';
-$password = '';
+$host = "localhost";
+$dbname = "sim_barang_db";
+$username = "root";
+$password = "";
 
 try {
-    // Membuat koneksi PDO ke database MySQL
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    
-    // Mengatur mode error PDO menjadi Exception agar mudah mendeteksi kendala
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
+    $pdo = new PDO(
+        "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
+        $username,
+        $password,
+        [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false
+        ]
+    );
 } catch (PDOException $e) {
-    // Menampilkan pesan jika koneksi gagal
-    die("Koneksi database gagal: " . $e->getMessage());
+    error_log($e->getMessage());
+    die("Koneksi database gagal. Periksa pengaturan MySQL.");
 }
 ?>

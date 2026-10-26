@@ -1,103 +1,51 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const formBarang = document.querySelector('#form-barang form');
-    const inputKode = document.getElementById('kode');
-    const inputNama = document.getElementById('nama');
-    const selectKategori = document.getElementById('kategori');
-    const inputJumlah = document.getElementById('jumlah');
-    const inputHarga = document.getElementById('harga');
-    const selectKondisi = document.getElementById('kondisi');
-    const inputCari = document.getElementById('cari-barang');
-    const tabelBarang = document.querySelector('#tabel-barang tbody');
-    const toast = document.getElementById('toast');
 
-    function showToast(message, type = 'success') {
-        if (!toast) return;
-        toast.textContent = message;
-        toast.className = `toast show ${type}`;
-        setTimeout(() => {
-            toast.className = 'toast';
-        }, 3000);
-    }
+document.addEventListener("DOMContentLoaded", function () {
+    const inputCari = document.getElementById("cari-barang");
+    const tabelBarang = document.getElementById("isi-tabel-barang");
+    const formBarang = document.getElementById("formInputBarang");
 
-    if (formBarang) {
-        formBarang.addEventListener('submit', function (event) {
-            event.preventDefault();
+    // Pencarian berdasarkan isi tabel.
+    if (inputCari && tabelBarang) {
+        inputCari.addEventListener("input", function () {
+            const kataKunci = inputCari.value.toLowerCase();
 
-            const kode = inputKode.value.trim().toUpperCase();
-            const jumlah = parseInt(inputJumlah.value, 10);
-            const harga = parseFloat(inputHarga.value);
+            tabelBarang.querySelectorAll("tr").forEach(function (baris) {
+                const teks = baris.textContent.toLowerCase();
 
-            inputKode.value = kode;
-
-            const regexKode = /^BRG-\d+$/;
-            if (!regexKode.test(kode)) {
-                showToast('Kode barang harus diawali "BRG-" dan diikuti angka (contoh: BRG-004)!', 'error');
-                inputKode.focus();
-                return;
-            }
-
-            if (isNaN(jumlah) || jumlah <= 0) {
-                showToast('Jumlah barang harus berupa angka positif lebih dari 0!', 'error');
-                inputJumlah.focus();
-                return;
-            }
-
-            if (isNaN(harga) || harga < 0) {
-                showToast('Harga satuan harus berupa angka yang valid!', 'error');
-                inputHarga.focus();
-                return;
-            }
-
-            // Hitung total nilai otomatis (Jumlah * Harga)
-            const totalNilai = jumlah * harga;
-
-            const formatRupiah = (angka) => {
-                return 'Rp ' + angka.toLocaleString('id-ID');
-            };
-
-            // Tambahkan ke tabel dengan 7 kolom lengkap
-            tambahBarangKeTabel(
-                kode, 
-                inputNama.value, 
-                selectKategori.value, 
-                jumlah, 
-                formatRupiah(harga), 
-                formatRupiah(totalNilai), 
-                selectKondisi.value
-            );
-
-            showToast('Data barang berhasil ditambahkan!', 'success');
-            formBarang.reset();
+                baris.style.display = teks.includes(kataKunci)
+                    ? ""
+                    : "none";
+            });
         });
     }
 
-    function tambahBarangKeTabel(kode, nama, kategori, jumlah, hargaSatuan, totalNilai, kondisi) {
-        const barisBaru = document.createElement('tr');
-        barisBaru.innerHTML = `
-            <td>${kode}</td>
-            <td>${nama}</td>
-            <td>${kategori}</td>
-            <td>${jumlah}</td>
-            <td>${hargaSatuan}</td>
-            <td>${totalNilai}</td>
-            <td>${kondisi}</td>
-        `;
-        tabelBarang.appendChild(barisBaru);
-    }
+    // Validasi sebelum data dikirim ke PHP.
+    if (formBarang) {
+        formBarang.addEventListener("submit", function (event) {
+            const kode = document.getElementById("kode").value.trim();
+            const jumlah = Number(
+                document.getElementById("jumlah").value
+            );
+            const harga = Number(
+                document.getElementById("harga").value
+            );
 
-    if (inputCari) {
-        inputCari.addEventListener('keyup', function () {
-            const kataKunci = inputCari.value.toLowerCase();
-            const semuaBaris = tabelBarang.querySelectorAll('tr');
+            if (!/^BRG-\d+$/.test(kode)) {
+                event.preventDefault();
+                alert("Format kode harus seperti BRG-004.");
+                return;
+            }
 
-            semuaBaris.forEach(function (baris) {
-                const teksBaris = baris.textContent.toLowerCase();
-                if (teksBaris.includes(kataKunci)) {
-                    baris.style.display = '';
-                } else {
-                    baris.style.display = 'none';
-                }
-            });
+            if (!Number.isInteger(jumlah) || jumlah < 1) {
+                event.preventDefault();
+                alert("Jumlah barang minimal 1.");
+                return;
+            }
+
+            if (!Number.isFinite(harga) || harga < 0) {
+                event.preventDefault();
+                alert("Harga harus berupa angka nol atau lebih.");
+            }
         });
     }
 });

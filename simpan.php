@@ -1,80 +1,84 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hasil Pemrosesan - SIM-Barang</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
 
-    <header>
-        <h1>SIM-Barang</h1>
-        <p>Hasil Pemrosesan Data di Sisi Server (PHP)</p>
-    </header>
+<?php
+session_start();
 
-    <main style="grid-template-columns: 1fr;">
-        <section>
-            <h2>Ringkasan Data Barang Masuk</h2>
+if (!isset($_SESSION["user"])) {
+    header("Location: login.php");
+    exit;
+}
 
-            <?php
-            // Menangkap data yang dikirimkan melalui metode POST
-            $kode = isset($_POST['kode']) ? htmlspecialchars($_POST['kode']) : '-';
-            $nama = isset($_POST['nama']) ? htmlspecialchars($_POST['nama']) : '-';
-            $kategori = isset($_POST['kategori']) ? htmlspecialchars($_POST['kategori']) : '-';
-            $jumlah = isset($_POST['jumlah']) ? (int)$_POST['jumlah'] : 0;
-            $harga = isset($_POST['harga']) ? (int)$_POST['harga'] : 0;
-            $kondisi = isset($_POST['kondisi']) ? htmlspecialchars($_POST['kondisi']) : '-';
+require_once "koneksi.php";
 
-            // Logika Perhitungan Aset: Jumlah Barang * Harga Satuan (Diperbaiki dengan operator *)
-            $total_nilai = $jumlah * $harga;
-            ?>
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    header("Location: index.php");
+    exit;
+}
 
-            <!-- Tabel Ringkasan Pemrosesan -->
-            <table>
-                <tr>
-                    <th>Informasi Atribut</th>
-                    <th>Nilai Data</th>
-                </tr>
-                <tr>
-                    <td><strong>Kode Barang</strong></td>
-                    <td><?php echo $kode; ?></td>
-                </tr>
-                <tr>
-                    <td><strong>Nama Barang</strong></td>
-                    <td><?php echo $nama; ?></td>
-                </tr>
-                <tr>
-                    <td><strong>Kategori</strong></td>
-                    <td><?php echo $kategori; ?></td>
-                </tr>
-                <tr>
-                    <td><strong>Jumlah Barang</strong></td>
-                    <td><?php echo $jumlah; ?> Unit</td>
-                </tr>
-                <tr>
-                    <td><strong>Harga Satuan</strong></td>
-                    <td>Rp <?php echo number_format($harga, 0, ',', '.'); ?></td>
-                </tr>
-                <tr>
-                    <td><strong>Total Estimasi Nilai Aset</strong></td>
-                    <td><strong style="color: #28a745;">Rp <?php echo number_format($total_nilai, 0, ',', '.'); ?></strong></td>
-                </tr>
-                <tr>
-                    <td><strong>Kondisi Barang</strong></td>
-                    <td><?php echo $kondisi; ?></td>
-                </tr>
-            </table>
+$kode = strtoupper(trim($_POST["kode"] ?? ""));
+$nama = trim($_POST["nama_barang"] ?? "");
+$kategoriId = filter_var(
+    $_POST["kategori_id"] ?? null,
+    FILTER_VALIDATE_INT
+);
+$jumlahRaw = $_POST["jumlah"] ?? "";
+$hargaRaw = $_POST["harga"] ?? "";
+$kondisi = $_POST["kondisi"] ?? "";
 
-            <div style="margin-top: 20px; text-align: center;">
-                <a href="index.html" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold;">&larr; Kembali ke Formulir Utama</a>
-            </div>
-        </section>
-    </main>
+if (
+    !preg_match('/^BRG-[0-9]+$/', $kode) ||
+    $nama === "" ||
+    $kategoriId === false ||
+    $kategoriId === null ||
+    $kategoriId < 1 ||
+    filter_var($jumlahRaw, FILTER_VALIDATE_INT) === false ||
+    (int)$jumlahRaw < 1 ||
+    !is_numeric($hargaRaw) ||
+    !is_finite((float)$hargaRaw) ||
+    (float)$hargaRaw < 0 ||
+    !in_array(
+        $kondisi,
+        ["Baik", "Rusak Ringan", "Rusak Berat"],
+        true
+    )
+) {
+    exit("Data tidak valid. Periksa kembali formulir barang.");
+}
 
-    <footer>
-        <p>&copy; 2026 SIM-Barang - D3 Manajemen Informatika Politeknik Negeri Sriwijaya</p>
-    </footer>
+try {
+    $cek = $pdo->prepare(
+        "SELECT COUNT(*) FROM kategori WHERE id = ?"
+    );
+    $cek->execute([$kategoriId]);
 
-</body>
-</html>
+    if ((int)$cek->fetchColumn() === 0) {
+        exit("Kategori tidak ditemukan.");
+    }
+
+    $stmt = $pdo->prepare(
+        "INSERT INTO barang
+        (kode, nama_barang, kategori_id, jumlah, harga, kondisi)
+        VALUES (?, ?, ?, ?, ?, ?)"
+    );
+
+    $stmt->execute([
+        $kode,
+        $nama,
+        $kategoriId,
+        (int)$jumlahRaw,
+        (float)$hargaRaw,
+        $kondisi
+    ]);
+
+    header("Location: index.php?status=berhasil");
+    exit;
+
+} catch (PDOException $e) {
+    error_log($e->getMessage());
+
+    if ($e->getCode() === "23000") {
+        exit("Kode barang sudah digunakan atau kategori tidak valid.");
+    }
+
+    exit("Barang gagal disimpan. Periksa konfigurasi database.");
+}
+?>

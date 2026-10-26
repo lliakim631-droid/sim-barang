@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 
@@ -59,13 +58,20 @@ $pesan = [
 <body>
 
 <header>
-    <h1>SIM-Barang</h1>
-    <p>Sistem Pengelolaan Inventaris Barang Jurusan</p>
-    <p>
-        Login sebagai:
-        <strong><?= e($_SESSION["user"]) ?></strong>
-        | <a href="logout.php">Logout</a>
-    </p>
+    <div>
+        <h1>SIM-Barang</h1>
+        <p>Sistem Pengelolaan Inventaris Barang Jurusan</p>
+    </div>
+
+    <nav>
+        <a href="#ringkasan">Ringkasan</a>
+        <a href="#tambah">Tambah Barang</a>
+        <a href="#daftar">Daftar Barang</a>
+        <span class="user">
+            Login: <strong><?= e($_SESSION["user"]) ?></strong>
+        </span>
+        <a href="logout.php">Logout</a>
+    </nav>
 </header>
 
 <main>
@@ -73,88 +79,100 @@ $pesan = [
         <p class="notice"><?= e($pesan[$status]) ?></p>
     <?php endif; ?>
 
-    <section>
-    <h2>Ringkasan Inventaris</h2>
-    <div class="ringkasan">
-        <div class="kartu">
-            <span>Total jenis barang</span>
-            <strong><?= $totalJenis ?></strong>
+    <section id="ringkasan">
+        <h2>Ringkasan Inventaris</h2>
+        <div class="ringkasan">
+            <div class="kartu">
+                <span>Total jenis barang</span>
+                <strong><?= $totalJenis ?></strong>
+            </div>
+            <div class="kartu">
+                <span>Total seluruh stok</span>
+                <strong><?= $totalStok ?></strong>
+            </div>
+            <div class="kartu">
+                <span>Total nilai inventaris</span>
+                <strong>Rp <?= number_format($totalNilai, 0, ",", ".") ?></strong>
+            </div>
         </div>
-        <div class="kartu">
-            <span>Total seluruh stok</span>
-            <strong><?= $totalStok ?></strong>
-        </div>
-        <div class="kartu">
-            <span>Total nilai inventaris</span>
-            <strong>Rp <?= number_format($totalNilai, 0, ",", ".") ?></strong>
-        </div>
-    </div>
     </section>
 
-    <section>
+    <section id="tambah">
         <h2>Tambah Barang</h2>
 
         <form id="formInputBarang" action="simpan.php" method="POST">
-            <label for="kode">Kode Barang</label>
-            <input
-                type="text"
-                id="kode"
-                name="kode"
-                placeholder="Contoh: BRG-004"
-                pattern="BRG-[0-9]+"
-                required
-            >
+            <div>
+                <label for="kode">Kode Barang</label>
+                <input
+                    type="text"
+                    id="kode"
+                    name="kode"
+                    placeholder="Contoh: BRG-004"
+                    pattern="BRG-[0-9]+"
+                    required
+                >
+            </div>
 
-            <label for="nama_barang">Nama Barang</label>
-            <input
-                type="text"
-                id="nama_barang"
-                name="nama_barang"
-                required
-            >
+            <div>
+                <label for="nama_barang">Nama Barang</label>
+                <input
+                    type="text"
+                    id="nama_barang"
+                    name="nama_barang"
+                    required
+                >
+            </div>
 
-            <label for="kategori_id">Kategori</label>
-            <select id="kategori_id" name="kategori_id" required>
-                <option value="">-- Pilih Kategori --</option>
-                <?php foreach ($kategori as $k): ?>
-                    <option value="<?= (int)$k["id"] ?>">
-                        <?= e($k["nama_kategori"]) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+            <div>
+                <label for="kategori_id">Kategori</label>
+                <select id="kategori_id" name="kategori_id" required>
+                    <option value="">-- Pilih Kategori --</option>
+                    <?php foreach ($kategori as $k): ?>
+                        <option value="<?= (int)$k["id"] ?>">
+                            <?= e($k["nama_kategori"]) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
-            <label for="jumlah">Jumlah</label>
-            <input
-                type="number"
-                id="jumlah"
-                name="jumlah"
-                min="1"
-                required
-            >
+            <div>
+                <label for="jumlah">Jumlah</label>
+                <input
+                    type="number"
+                    id="jumlah"
+                    name="jumlah"
+                    min="1"
+                    required
+                >
+            </div>
 
-            <label for="harga">Harga Satuan (Rp)</label>
-            <input
-                type="number"
-                id="harga"
-                name="harga"
-                min="0"
-                step="0.01"
-                required
-            >
+            <div>
+                <label for="harga">Harga Satuan (Rp)</label>
+                <input
+                    type="number"
+                    id="harga"
+                    name="harga"
+                    min="0"
+                    step="0.01"
+                    required
+                >
+            </div>
 
-            <label for="kondisi">Kondisi</label>
-            <select id="kondisi" name="kondisi" required>
-                <option value="">-- Pilih Kondisi --</option>
-                <option value="Baik">Baik</option>
-                <option value="Rusak Ringan">Rusak Ringan</option>
-                <option value="Rusak Berat">Rusak Berat</option>
-            </select>
+            <div>
+                <label for="kondisi">Kondisi</label>
+                <select id="kondisi" name="kondisi" required>
+                    <option value="">-- Pilih Kondisi --</option>
+                    <option value="Baik">Baik</option>
+                    <option value="Rusak Ringan">Rusak Ringan</option>
+                    <option value="Rusak Berat">Rusak Berat</option>
+                </select>
+            </div>
 
             <button type="submit">Simpan Barang</button>
         </form>
     </section>
 
-    <section>
+    <section id="daftar">
         <h2>Daftar Barang</h2>
 
         <label for="cari-barang">Cari Barang</label>
@@ -241,6 +259,10 @@ $pesan = [
         </div>
     </section>
 </main>
+
+<footer>
+    <p>&copy; <?= date("Y") ?> SIM-Barang &mdash; Praktikum Pemrograman Web, D3 Manajemen Informatika, Politeknik Negeri Sriwijaya</p>
+</footer>
 
 </body>
 </html>
